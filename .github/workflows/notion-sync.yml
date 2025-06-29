@@ -1,0 +1,31 @@
+name: Sync Notion to GitHub
+
+on:
+  workflow_dispatch: # 수동 실행 가능
+  schedule:
+    - cron: '0 0 * * *' # 매일 자정 실행 (UTC 기준)
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Sync Notion pages
+        uses: reeseric/notion-to-markdown-action@v1
+        with:
+          notion_token: ${{ secrets.NOTION_TOKEN }}
+          database_id: '221efa77dcdf801a8b1fd64ac2bc0df8'
+          output_path: 'content'
+
+      - name: Commit and push changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "Auto-sync Notion content" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
