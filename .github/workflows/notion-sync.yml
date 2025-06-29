@@ -8,17 +8,15 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Sync Notion to Markdown
-        uses: kognise/notion-md@v2
+        uses: tryfabric/notion-github-action@v1 
         with:
-          token: ${{ secrets.NOTION_TOKEN }}
-          database: '221efa77dcdf801a8b1fd64ac2bc0df8'
-          output: 'content'
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          DATABASE_ID: '221efa77dcdf801a8b1fd64ac2bc0df8' # Notion DB ID
 
       - name: Commit and push changes
         run: |
