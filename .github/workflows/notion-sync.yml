@@ -1,9 +1,9 @@
 name: Sync Notion to GitHub
 
 on:
-  workflow_dispatch: # 수동 실행 가능
+  workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # 매일 자정 실행 (UTC 기준)
+    - cron: '0 0 * * *'
 
 jobs:
   sync:
@@ -13,12 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Sync Notion pages
-        uses: reeseric/notion-to-markdown-action@v1
+      - name: Sync Notion to Markdown
+        uses: kognise/notion-md@v2
         with:
-          notion_token: ${{ secrets.NOTION_TOKEN }}
-          database_id: '221efa77dcdf801a8b1fd64ac2bc0df8'
-          output_path: 'content'
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: '221efa77dcdf801a8b1fd64ac2bc0df8'
+          output: 'content'
 
       - name: Commit and push changes
         run: |
